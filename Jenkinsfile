@@ -1,14 +1,16 @@
 pipeline {
     agent any
+
     stages {
-        stage('Build'){
+        stage('Build') {
             steps {
-                echo 'My First Jenkiens FIle'
+                echo 'My First Jenkins File'
             }
         }
-        stage('Test')
+        stage('Test') {
             steps {
                 echo 'Running automated test suites...'
             }
+        }
     }
 }
