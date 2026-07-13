@@ -2,60 +2,60 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME    = 'my-custom-app'
-        BUILD_TAG   = "build-${env.BUILD_NUMBER}"
+        APP_NAME      = 'daraz-clone'
+        DOCKER_IMAGE  = "local-registry/${APP_NAME}:latest"
+        SERVER_PORT   = '3000'
     }
 
     stages {
-        stage('🧹 Cleanup & Setup') {
+        stage('🧹 Workspace Cleanup') {
             steps {
-                echo "Starting pipeline cleanup for ${APP_NAME}..."
-                echo "Current Build Number: ${BUILD_TAG}"
+                cleanWs() // Purana kharab data delete karne ki standard enterprise command
             }
         }
 
-        stage('📦 Code Build') {
+        stage('📥 Checkout Source Code') {
             steps {
-                echo 'Compiling source code and checking extensions...'
-                echo 'Creating production artifacts...'
+                checkout scm // GitHub se code pull karne ki automatic secure command
             }
         }
 
-        stage('🔍 Code Quality (SAST)') {
+        stage('📦 Install Dependencies') {
             steps {
-                echo 'Running SonarQube static code analysis...'
-                echo 'Checking for security vulnerabilities and code smells...'
+                // Real Command: Saare software packages install karein gey
+                sh 'npm install'
             }
         }
 
-        stage('🧪 Automated Testing') {
+        stage('🧪 Run Real Test Cases') {
             steps {
-                echo 'Running Unit Tests...'
-                echo 'Running Integration Test suites...'
+                // Real Automation Test: Agar 1 bhi test case fail hua, pipeline yahi ruk jaye gi
+                sh 'npm test'
             }
         }
 
-        stage('🐳 Docker Packaging') {
+        stage('🐳 Build Docker Container') {
             steps {
-                echo "Building Docker Image: ${APP_NAME}:${BUILD_TAG}"
-                echo 'Tagging container image for repository...'
+                // Real Docker Build: Code ka secure image banana
+                sh "docker build -t ${DOCKER_IMAGE} ."
             }
         }
 
-        stage('🚀 Staging Deployment') {
+        stage('🚀 Server Deployment') {
             steps {
-                echo "Deploying ${APP_NAME} to Staging environment..."
-                echo 'Verifying health check endpoints...'
+                // Real Deployment: Purane container ko mita kar naya live karna
+                sh "docker stop ${APP_NAME} || true"
+                sh "docker rm ${APP_NAME} || true"
+                sh "docker run -d --name ${APP_NAME} -p ${SERVER_PORT}:3000 ${DOCKER_IMAGE}"
+                
+                echo "🎉 Website Successfully Deployed and Live on http://localhost:${SERVER_PORT}"
             }
         }
     }
 
     post {
-        success {
-            echo '🎉 Pipeline successfully completed! All stages passed.'
-        }
-        failure {
-            echo '❌ Pipeline failed. Please check the specific stage logs above.'
+        always {
+            echo 'Pipeline execution finished.'
         }
     }
 }
