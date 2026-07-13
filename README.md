@@ -1,32 +1,28 @@
 # Project-2-Jenkins-Docker-Pipeline
 
 ## 📖 Overview
-
-This project demonstrates an **Enterprise-Grade CI/CD Pipeline** designed to automate the lifecycle of a Node.js web application. It transitions from source code management to automated testing and containerized production deployment.
+This project demonstrates an **Enterprise-Grade CI/CD Pipeline** designed to automate the lifecycle of a Node.js web application. It transitions from source code management to automated testing and containerized production deployment using Jenkins and Docker.
 
 ### Key Objectives
-
-* **Automation:** Automate repetitive manual deployment tasks using Jenkins.
-* **Validation:** Ensure code quality through automated unit testing using Mocha and Supertest.
-* **Containerization:** Achieve environment consistency by packaging the application into a Docker container.
-* **Resilience:** Implement "Docker-out-of-Docker" (DooD) to allow Jenkins to manage host-level container lifecycles.
+*   **Automation:** Automate repetitive manual deployment tasks using a declarative Jenkins pipeline.
+*   **Validation:** Ensure code quality through automated unit testing using Mocha and Supertest.
+*   **Containerization:** Achieve environment consistency by packaging the application into a Docker container.
+*   **Resilience:** Implement "Docker-out-of-Docker" (DooD) to allow Jenkins to manage host-level container lifecycles safely.
 
 ---
 
 ## 🛠 Tech Stack
-
-* **CI/CD:** Jenkins (Declarative Pipeline)
-* **Runtime:** Node.js (v18)
-* **Testing:** Mocha, Supertest
-* **Orchestration:** Docker
-* **Deployment Environment:** Linux/WSL
+*   **CI/CD:** Jenkins (Declarative Pipeline)
+*   **Runtime:** Node.js (v18)
+*   **Testing:** Mocha, Supertest
+*   **Orchestration:** Docker
+*   **Deployment Environment:** Linux/WSL
 
 ---
 
 ## 🚀 Step-by-Step Setup Guide
 
 ### 1. Initialize Jenkins with Docker Socket
-
 To enable Jenkins to build images on the host, run the container with socket volume mapping:
 
 ```bash
@@ -53,7 +49,7 @@ pipeline {
     tools { nodejs 'node18' }
     stages {
         stage('Cleanup') { steps { cleanWs() } }
-        stage('Clone') { steps { git branch: 'main', url: 'YOUR_REPO_URL' } }
+        stage('Clone') { steps { git branch: 'main', url: '[https://github.com/AhmadProjects-git/Project-2-Jenkins-Docker-Pipeline.git](https://github.com/AhmadProjects-git/Project-2-Jenkins-Docker-Pipeline.git)' } }
         stage('Install') { steps { sh 'npm install' } }
         stage('Test') { steps { sh 'npm test' } }
         stage('Build') { steps { sh 'docker build -t daraz-clone .' } }
@@ -69,24 +65,24 @@ pipeline {
 
 ---
 
-## 📈 Troubleshooting & Pipeline History
+## 📈 Pipeline Lifecycle History
 
-### 1. Initial Failure: Dependency Parsing
+### 🛑 Iteration 1: Initial Failure (Dependency Parsing Error)
 
-In our initial build, the pipeline failed during the `Install` stage due to a malformed `package.json` file. This highlights the importance of rigorous JSON validation in automated builds.
+During the initial staging run, the pipeline crashed at the `Install` stage. This was caused by an empty `package.json` file, demonstrating the necessity of schema validation in automated builds.
 
-### 2. Resolution & Success
+### ✅ Iteration 2: Enterprise Integration Success
 
-After fixing the JSON schema and adding an `after()` hook to the Mocha test suite to terminate the Node process, the pipeline achieved full lifecycle success, leading to automated deployment.
+After resolving dependency issues and adding an `after()` hook in the Mocha test suite to properly terminate the server process, the pipeline achieved full lifecycle success.
 
 ---
 
 ## 💡 Lessons Learned
 
-* **Environment Parity:** Always ensure local and container environments have synchronized dependency versions.
-* **Process Management:** Automated testing environments require explicit process termination commands (`process.exit(0)`) to prevent Jenkins pipeline hangs.
-* **Infrastructure as Code:** Using a `Jenkinsfile` ensures that deployment logic is version-controlled and reproducible.
+* **Environment Parity:** Ensure local and container environments have synchronized dependency versions.
+* **Process Management:** Automated testing environments require explicit termination commands (`process.exit(0)`) to prevent CI/CD pipeline hangs.
+* **Infrastructure as Code:** Using a `Jenkinsfile` provides a version-controlled and reproducible deployment strategy.
 
 ---
 
-*Created by Ahmad Hassan - DevOps Engineer*
+*Maintained by Ahmad Hassan - DevOps Engineer*
