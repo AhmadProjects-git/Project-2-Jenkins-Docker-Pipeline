@@ -68,12 +68,12 @@ pipeline {
 ## 📈 Pipeline Lifecycle History
 
 ### 🛑 Iteration 1: Initial Failure (Dependency Parsing Error)
-
-During the initial staging run, the pipeline crashed at the `Install` stage. This was caused by an empty `package.json` file, demonstrating the necessity of schema validation in automated builds.
+![Pipeline Failed](assets/failed-pipeline.png)
 
 ### ✅ Iteration 2: Enterprise Integration Success
-
 After resolving dependency issues and adding an `after()` hook in the Mocha test suite to properly terminate the server process, the pipeline achieved full lifecycle success.
+![Pipeline Success](assets/success-pipeline.png)
+During the initial staging run, the pipeline crashed at the `Install` stage. This was caused by an empty `package.json` file, demonstrating the necessity of schema validation in automated builds.
 
 ---
 
