@@ -7,3 +7,8 @@ describe('GET /', () => {
         if (res.statusCode !== 200) throw new Error("Website Home Route Down!");
     });
 });
+
+// ⚠️ Zaroori Hook: Test cases pass hone ke baad continuous loop se exit karne ke liye
+after((done) => {
+    process.exit(0);
+});
